@@ -7,7 +7,7 @@ var netrc = require('node-netrc');
 
 function createError(message) {
   return new PluginError({
-    plugin: 'gulp-deployslug',
+    plugin: 'gulp-heroku-deploy-slug',
     message: message
   });
 }
