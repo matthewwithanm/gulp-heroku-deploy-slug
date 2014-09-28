@@ -1,0 +1,24 @@
+{
+  "name": "gulp-heroku-deploy-slug",
+  "version": "0.0.0",
+  "description": "Deploy slug archives to Heroku",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/matthewwithanm/gulp-heroku-deploy-slug.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "heroku",
+    "deploy"
+  ],
+  "author": "Matthew Dapena-Tretter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthewwithanm/gulp-heroku-deploy-slug/issues"
+  },
+  "homepage": "https://github.com/matthewwithanm/gulp-heroku-deploy-slug"
+}
