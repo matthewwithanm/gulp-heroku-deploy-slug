@@ -30,6 +30,7 @@
   "devDependencies": {
     "mocha": "^1.21.4",
     "proxyquire": "^1.0.1",
-    "sinon": "^1.10.3"
+    "sinon": "^1.10.3",
+    "vinyl-fs-mock": "^0.1.2"
   }
 }
