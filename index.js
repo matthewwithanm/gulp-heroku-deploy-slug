@@ -3,6 +3,7 @@ var PluginError = require('gulp-util').PluginError;
 var through = require('through2');
 var path = require('path');
 var netrc = require('node-netrc');
+var stream = require('stream');
 
 
 function createError(message) {
@@ -64,34 +65,43 @@ function deploySlug(opts) {
 
       var slugId = body.id;
 
+      // Make sure we're dealing with a stream.
+      var fileStream = file;
+      if (file.isBuffer()) {
+        fileStream = new stream.Transform();
+        fileStream.push(file.contents);
+      }
+
       // Upload the slug.
-      request.put({
-        url: body.blob.url,
-        body: file.contents
-      }, function(error, response, body) {
-        if (!checkResponse(this, response, error, 'Failed to upload slug')) {
-          return callback();
-        }
-
-        if (opts.release === false) {
-          return callback();
-        }
-
-        request.post({
-          url: 'https://api.heroku.com/apps/' + opts.app + '/releases',
-          json: true,
-          headers: {Accept: 'application/vnd.heroku+json; version=3'},
-          body: {slug: slugId},
-          auth: creds
+      fileStream.pipe(
+        request.put({
+          url: body.blob.url,
+          headers: {'Content-Length': file.stat.size}
         }, function(error, response, body) {
-          if (!checkResponse(this, response, error, 'Failed to release slug')) {
+          if (!checkResponse(this, response, error, 'Failed to upload slug')) {
             return callback();
           }
 
-          this.push(file);
-          callback();
-        }.bind(this));
-      }.bind(this));
+          if (opts.release === false) {
+            return callback();
+          }
+
+          request.post({
+            url: 'https://api.heroku.com/apps/' + opts.app + '/releases',
+            json: true,
+            headers: {Accept: 'application/vnd.heroku+json; version=3'},
+            body: {slug: slugId},
+            auth: creds
+          }, function(error, response, body) {
+            if (!checkResponse(this, response, error, 'Failed to release slug')) {
+              return callback();
+            }
+
+            this.push(file);
+            callback();
+          }.bind(this));
+        }.bind(this))
+      );
     }.bind(this));
   });
 }
