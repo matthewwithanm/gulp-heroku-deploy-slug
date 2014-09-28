@@ -45,7 +45,7 @@ function deploySlug(opts) {
       return callback();
     }
 
-    if (['.tar.gz', '.tgz'].indexOf(path.extname(file.path)) === -1) {
+    if (!/(\.tar\.gz|\.tgz)$/.test(file.path)) {
       this.emit('error', createError('File must be a .tar.gz archive!'));
       return callback();
     }
