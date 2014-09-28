@@ -1,6 +1,6 @@
 {
   "name": "gulp-heroku-deploy-slug",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Deploy slug archives to Heroku",
   "main": "index.js",
   "scripts": {
